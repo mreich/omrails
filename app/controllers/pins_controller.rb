@@ -1,4 +1,6 @@
 class PinsController < ApplicationController
+  before_filter :authenticate_user!, except: [:index]
+
   # GET /pins
   # GET /pins.json
   def index
@@ -24,7 +26,7 @@ class PinsController < ApplicationController
   # GET /pins/new
   # GET /pins/new.json
   def new
-    @pin = Pin.new
+    @pin = current_user.pins.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,7 +42,7 @@ class PinsController < ApplicationController
   # POST /pins
   # POST /pins.json
   def create
-    @pin = Pin.new(params[:pin])
+    @pin = current_user.pin.new(params[:pin])
 
     respond_to do |format|
       if @pin.save
